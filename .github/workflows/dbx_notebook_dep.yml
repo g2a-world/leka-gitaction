@@ -12,8 +12,8 @@ jobs:
      - name: Run a databricks notebook
        uses: databricks/run-notebook@v0
        with:
-         local-notebook-path: path/to/my/databricks_notebook.py
-         databricks-host: https://adb-XXXX.XX.dev.azuredatabricks.net
+         local-notebook-path: /Upsert-Demo/ingest/ingest_csv_delta
+         databricks-host: https://adb-4546395387634582.2.azuredatabricks.net
          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
          git-commit: ${{ github.event.pull_request.head.sha }}
          new-cluster-json: >
