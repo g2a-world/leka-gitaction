@@ -12,7 +12,7 @@ jobs:
      - name: Run a databricks notebook
        uses: databricks/run-notebook@v0
        with:
-         local-notebook-path: data_processing/ingest_student_csv
+         local-notebook-path: https://adb-4546395387634582.2.azuredatabricks.net/browse/folders/2062457136895097?o=4546395387634582
          databricks-host: https://adb-4546395387634582.2.azuredatabricks.net
          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
          git-commit: ${{ github.event.pull_request.head.sha }}
