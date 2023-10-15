@@ -21,7 +21,7 @@ jobs:
       - name: Run a Databricks notebook
         uses: databricks/run-notebook@v0
         with:
-          local-notebook-path: https://adb-4546395387634582.2.azuredatabricks.net/?o=4546395387634582#notebook/1314783134662450
+          local-notebook-path: /Repos/girma@nubires.onmicrosoft.com/leka-gitaction/data_processing/ingest_student_csv.py
           databricks-host: https://adb-4546395387634582.2.azuredatabricks.net
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
           git-commit: ${{ github.event.pull_request.head.sha }}
