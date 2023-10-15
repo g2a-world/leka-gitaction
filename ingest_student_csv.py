@@ -1,4 +1,6 @@
 # Databricks notebook source
+# Ingesting student records - temp file.
+
 csv_student = spark.read \
     .option("inferSchema", True) \
         .option("header", True) \
