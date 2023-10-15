@@ -1,24 +1,33 @@
-name: Run a notebook in databricks on PRs
+name: Run a notebook in Databricks on PRs
 
 on:
- pull_request:
+  pull_request:
 
 jobs:
- run-databricks-notebook:
-   runs-on: ubuntu-latest
-   steps:
-     - name: Checkout repo
-       uses: actions/checkout@v2
-     - name: Run a databricks notebook
-       uses: databricks/run-notebook@v0
-       with:
-         local-notebook-path: https://adb-4546395387634582.2.azuredatabricks.net/?o=4546395387634582#notebook/1314783134662450
-         databricks-host: https://adb-4546395387634582.2.azuredatabricks.net
-         databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
-         git-commit: ${{ github.event.pull_request.head.sha }}
-         new-cluster-json: >
-           {
-             "num_workers": 1,
-             "spark_version": "10.4.x-scala2.12",
-             "node_type_id": "Standard_D3_v2"
-           }
+  run-databricks-notebook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Debugging Step
+        run: |
+          echo "GitHub Event:"
+          echo "${{ toJson(github.event) }}"
+          echo "DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}"
+          echo "DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}"
+          echo "Git Commit SHA: ${{ github.event.pull_request.head.sha }}"
+
+      - name: Run a Databricks notebook
+        uses: databricks/run-notebook@v0
+        with:
+          local-notebook-path: https://adb-4546395387634582.2.azuredatabricks.net/?o=4546395387634582#notebook/1314783134662450
+          databricks-host: https://adb-4546395387634582.2.azuredatabricks.net
+          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+          git-commit: ${{ github.event.pull_request.head.sha }}
+          new-cluster-json: >
+            {
+              "num_workers": 1,
+              "spark_version": "10.4.x-scala2.12",
+              "node_type_id": "Standard_D3_v2"
+            }
