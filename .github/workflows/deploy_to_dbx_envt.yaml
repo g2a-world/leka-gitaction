@@ -1,0 +1,111 @@
+name: Deploy to Databricks Environments
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-dev:
+    name: Deploy to Dev Environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Deploy to Dev
+        run: |
+          echo "Deploying to Dev Environment..."
+          # Replace with your actual deployment commands for the Dev environment
+          # Replace these variables with your actual values
+
+          DATABRICKS_HOST="https://adb-4546395387634582.2.azuredatabricks.net"
+          DATABRICKS_TOKEN="${{ secrets.DATABRICKS_TOKEN }}"
+          DEV_NOTEBOOK_PATH="data_processing"
+
+          # Use the Azure Databricks CLI to import notebooks
+          pip install databricks-cli  # Install the Databricks CLI if not already installed
+          databricks configure --token  # Configure the CLI with your token
+
+          # Define the path to the "data_processing" folder in your GitHub repository
+          GITHUB_INGESTION_FOLDER="/Repos/girma@nubires.onmicrosoft.com/leka-gitaction/data_processing"
+
+          # Import notebooks from the "data_processing" folder to the Dev environment
+          for notebook in "ingest_student_csv.py" "notebook2.py" "notebook3.py"; do
+            notebook_path="$GITHUB_INGESTION_FOLDER/$notebook"
+            databricks workspace import -l "$DEV_NOTEBOOK_PATH/$notebook" "$notebook_path"
+          done
+
+echo "Deployment to Dev completed."
+
+          echo "Deployment to Dev completed."
+
+  deploy-stage:
+    name: Deploy to Stage Environment
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Deploy to Stage
+        run: |
+          echo "Deploying to Stage Environment..."
+          # Replace with your actual deployment commands for the Stage environment
+          echo "Deployment to Stage completed."
+
+  deploy-prod:
+    name: Deploy to Prod Environment
+    runs-on: ubuntu-latest
+    needs: deploy-stage
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Deploy to Prod
+        run: |
+          echo "Deploying to Prod Environment..."
+          # Replace with your actual deployment commands for the Prod environment
+          echo "Deployment to Prod completed."
+
+  manual-trigger:
+    name: Manual Trigger
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Request Approval
+        id: approval
+        run: |
+          echo "Please approve the deployment by clicking the 'Run Workflow' button."
+          echo "::set-output name=approval::true"
+        shell: bash
+
+  deploy-env-trigger:
+    name: Deploy Environment Trigger
+    runs-on: ubuntu-latest
+    needs: [deploy-prod, manual-trigger]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Deploy to Environment
+        run: |
+          if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
+            echo "Deploying to Dev Environment..."
+            # Simulate deployment to Dev
+            echo "Deployment to Dev completed."
+          elif [[ "${{ github.event.inputs.environment }}" == "stage" ]]; then
+            echo "Deploying to Stage Environment..."
+            # Simulate deployment to Stage
+            echo "Deployment to Stage completed."
+          elif [[ "${{ github.event.inputs.environment }}" == "prod" ]]; then
+            echo "Deploying to Prod Environment..."
+            # Simulate deployment to Prod
+            echo "Deployment to Prod completed."
+          fi
+        shell: bash
