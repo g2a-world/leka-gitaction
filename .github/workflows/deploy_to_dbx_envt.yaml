@@ -37,8 +37,6 @@ jobs:
             databricks workspace import -l "$DEV_NOTEBOOK_PATH/$notebook" "$notebook_path"
           done
 
-echo "Deployment to Dev completed."
-
           echo "Deployment to Dev completed."
 
   deploy-stage:
@@ -71,8 +69,6 @@ echo "Deployment to Dev completed."
             notebook_path="$GITHUB_INGESTION_FOLDER/$notebook"
             databricks workspace import -l "$STAGE_NOTEBOOK_PATH/$notebook" "$notebook_path"
           done
-
-echo "Deployment to Stage completed."
 
           echo "Deployment to Stage completed."
 
@@ -107,8 +103,6 @@ echo "Deployment to Stage completed."
             notebook_path="$GITHUB_INGESTION_FOLDER/$notebook"
             databricks workspace import -l "$PROD_NOTEBOOK_PATH/$notebook" "$notebook_path"
           done
-
-          echo "Deployment to Prod completed."
 
           echo "Deployment to Prod completed."
 
