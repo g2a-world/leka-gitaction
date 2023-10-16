@@ -22,7 +22,7 @@ jobs:
 
           DATABRICKS_HOST="https://adb-4546395387634582.2.azuredatabricks.net"
           DATABRICKS_TOKEN="${{ secrets.DATABRICKS_TOKEN }}"
-          DEV_NOTEBOOK_PATH="/Repos/girma@nubires.onmicrosoft.com/leka-gitaction/data_processing"
+          DEV_NOTEBOOK_PATH="/Repos/girma@nubires.onmicrosoft.com/leka-gitaction/data_processing/"
 
           # Use the Azure Databricks CLI to import notebooks
           pip install databricks-cli  # Install the Databricks CLI if not already installed
