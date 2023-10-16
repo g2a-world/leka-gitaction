@@ -22,7 +22,7 @@ jobs:
 
           DATABRICKS_HOST="https://adb-4546395387634582.2.azuredatabricks.net"
           DATABRICKS_TOKEN="${{ secrets.DATABRICKS_TOKEN }}"
-          DEV_NOTEBOOK_PATH="data_processing"
+          DEV_NOTEBOOK_PATH="/Repos/girma@nubires.onmicrosoft.com/leka-gitaction/data_processing"
 
           # Use the Azure Databricks CLI to import notebooks
           pip install databricks-cli  # Install the Databricks CLI if not already installed
@@ -53,7 +53,27 @@ echo "Deployment to Dev completed."
       - name: Deploy to Stage
         run: |
           echo "Deploying to Stage Environment..."
-          # Replace with your actual deployment commands for the Stage environment
+          # Replace these variables with your actual values
+
+          DATABRICKS_HOST="https://adb-XXXX.XX.stage.azuredatabricks.net"
+          DATABRICKS_TOKEN="${{ secrets.DATABRICKS_TOKEN }}"
+          STAGE_NOTEBOOK_PATH="/your-stage-notebook-path"
+
+          # Use the Azure Databricks CLI to import notebooks to the Stage environment
+          pip install databricks-cli  # Install the Databricks CLI if not already installed
+          databricks configure --token  # Configure the CLI with your token
+
+          # Define the path to the "ingestion" folder in your GitHub repository
+          GITHUB_INGESTION_FOLDER="ingestion"
+
+          # Import notebooks from the "ingestion" folder to the Stage environment
+          for notebook in "notebook1.py" "notebook2.py" "notebook3.py"; do
+            notebook_path="$GITHUB_INGESTION_FOLDER/$notebook"
+            databricks workspace import -l "$STAGE_NOTEBOOK_PATH/$notebook" "$notebook_path"
+          done
+
+echo "Deployment to Stage completed."
+
           echo "Deployment to Stage completed."
 
   deploy-prod:
@@ -69,6 +89,27 @@ echo "Deployment to Dev completed."
         run: |
           echo "Deploying to Prod Environment..."
           # Replace with your actual deployment commands for the Prod environment
+
+          # Replace these variables with your actual values
+          DATABRICKS_HOST="https://adb-XXXX.XX.prod.azuredatabricks.net"
+          DATABRICKS_TOKEN="${{ secrets.DATABRICKS_TOKEN }}"
+          PROD_NOTEBOOK_PATH="/your-prod-notebook-path"
+
+          # Use the Azure Databricks CLI to import notebooks to the Prod environment
+          pip install databricks-cli  # Install the Databricks CLI if not already installed
+          databricks configure --token  # Configure the CLI with your token
+
+          # Define the path to the "ingestion" folder in your GitHub repository
+          GITHUB_INGESTION_FOLDER="ingestion"
+
+          # Import notebooks from the "ingestion" folder to the Prod environment
+          for notebook in "notebook1.py" "notebook2.py" "notebook3.py"; do
+            notebook_path="$GITHUB_INGESTION_FOLDER/$notebook"
+            databricks workspace import -l "$PROD_NOTEBOOK_PATH/$notebook" "$notebook_path"
+          done
+
+          echo "Deployment to Prod completed."
+
           echo "Deployment to Prod completed."
 
   manual-trigger:
